@@ -1,0 +1,25 @@
+Package: leanplumber
+Type: Package
+Title: Thin Wrapper for the Leanplum API
+Version: 0.1.0
+Authors@R: c(
+    person("Ray", "Buhr", email = "raymond.buhr@gmail.com", role = c("aut", "cre"))
+    )
+Maintainer: Ray Buhr <raymond.buhr@gmail.com>
+Description: The leanplumber package provides a simple interface in R to Leanplum's API.
+    Start with the documentation at https://docs.leanplum.com/reference#introduction.
+    This package makes it a bit easier to send data to Leanplum, as well as export data.
+URL: http://github.com/raybuhr/leanplumber
+BugReports: https://github.com/raybuhr/leanplumber/issues
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Depends: R (>= 3.0.0)
+Imports:
+    httr,
+    jsonlite,
+    lubridate
+Suggests:
+    dplyr,
+    purrr
+RoxygenNote: 6.0.1
