@@ -1,7 +1,7 @@
 Package: leanplumber
 Type: Package
 Title: Thin Wrapper for the Leanplum API
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: c(
     person("Ray", "Buhr", email = "raymond.buhr@gmail.com", role = c("aut", "cre"))
     )

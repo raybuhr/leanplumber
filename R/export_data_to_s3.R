@@ -1,0 +1,58 @@
+#' Export All Data to AWS S3
+#'
+#' https://docs.leanplum.com/reference#get_api-action-exportdata
+#'
+#' Exports raw data to downloadable files. Data is split into roughly 256 MB files, and is not necessarily ordered.
+#' Exports can be made in JSON or CSV format
+#' For JSON format, each file contains 1 line per session, with each session JSON-encoded.
+#' For CSV format, data is split into separate files for sessions, states, events, event parameters, and user attributes.
+#'
+#' @param start_date string - First date in range to include in PDT/PST format: YYYYmmdd. Example: 20140223.
+#' @param end_date string - Last date in range to include in PDT/PST format: YYYYmmdd. Defaults to startDate if not provided. Example: 20140223.
+#' @param export_format string - The format to export data. Can be either json or csv. Default: json.
+#' @param s3_bucket_name string - the name of the bucket to send export file\(s\) to,
+#' @param s3_access_id string - AWS credentials key_id, default is Sys.getenv\("AWS_ACCESS_KEY_ID"\),
+#' @param s3_access_key string - AWS credentials secret_key, default is Sys.getenv\("AWS_ACCESS_SECRET_KEY"\)
+#' @param s3_path string - s3 directory inside bucket, default is "leanplum/"
+#' @param compress_data string - boolean "true" or "false" for whether to compress with gzip
+#' @param api_version string - The version of the Leanplum API to use. The current version is 1.0.6.
+#' @param app_id string - The application ID. To find yours, select your app in the navigation column, and click Edit Apps. Under Keys, click Show.
+#' @param client_key string - The Data Export key for your Leanplum App.
+#'
+#' @return A http response parsed by httr and jsonlite
+#' @export
+lp_export_data_to_s3 <- function(
+  start_date = Sys.Date() - 1,
+  end_date = NULL,
+  export_format = "json",
+  s3_bucket_name,
+  s3_access_id = Sys.getenv("AWS_ACCESS_KEY_ID"),
+  s3_access_key = Sys.getenv("AWS_ACCESS_SECRET_KEY"),
+  s3_path = "leanplum/",
+  compress_data = "true",
+  api_version = "1.0.6",
+  app_id = Sys.getenv("LEANPLUM_APP_ID"),
+  client_key = Sys.getenv("LEANPLUM_DATA_EXPORT")
+) {
+  start_date <- format(lubridate::parse_date_time(start_date, c("ymd", "mdy")), "%Y%m%d")
+  if (!is.null(end_date)) {
+    end_date <- format(lubridate::parse_date_time(end_date, c("ymd", "mdy")), "%Y%m%d")
+  }
+  resp <- httr::GET(url = "https://www.leanplum.com/api?action=exportData",
+                    query = list(
+                      appId = app_id,
+                      clientKey = client_key,
+                      apiVersion = api_version,
+                      startDate = start_date,
+                      endData = end_date,
+                      exportFormat = export_format,
+                      s3BucketName = s3_bucket_name,
+                      s3AccessId = s3_access_id,
+                      s3AccessKey = s3_access_key,
+                      s3ObjectPrefix = paste0(s3_path, start_date, "/"),
+                      compressData = compress_data
+                    ),
+                    encode = "json"
+  )
+  return(jsonlite::fromJSON(httr::content(resp, "text"), simplifyVector = FALSE))
+}

@@ -2,6 +2,7 @@
 
 export(lp_export_abtest_results)
 export(lp_export_data)
+export(lp_export_data_to_s3)
 export(lp_export_message_results)
 export(lp_export_user_activity_report)
 export(lp_export_users)
