@@ -49,7 +49,7 @@ lp_export_data_to_s3 <- function(
                       s3BucketName = s3_bucket_name,
                       s3AccessId = s3_access_id,
                       s3AccessKey = s3_access_key,
-                      s3ObjectPrefix = paste0(s3_path, start_date, "/"),
+                      s3ObjectPrefix = s3_path,
                       compressData = compress_data
                     ),
                     encode = "json"
