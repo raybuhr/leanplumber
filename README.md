@@ -6,6 +6,12 @@ A thin http client wrapper for the [Leanplum API](https://docs.leanplum.com/refe
 
 The leanplumber package provides a simple interface in R to Leanplum's API.
 
+## Installation
+
+```r
+devtools::install_github('raybuhr/leanplumber')
+```
+
 ## Details
 
 I recommend that you start with the official documentation at [https://docs.leanplum.com/reference#introduction](https://docs.leanplum.com/reference#introduction). 
